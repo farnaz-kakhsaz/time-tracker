@@ -30,7 +30,11 @@ export default function DialogBase({
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          <ButtonBase onClick={handleDoneDialog} disabled={!titleValue}>
+          <ButtonBase
+            onClick={handleDoneDialog}
+            disabled={!titleValue}
+            color="secondary"
+          >
             Done
           </ButtonBase>
         </DialogActions>

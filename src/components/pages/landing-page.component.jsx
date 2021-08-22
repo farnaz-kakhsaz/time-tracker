@@ -1,10 +1,11 @@
-import { useReducer } from "react";
+import { useState, useReducer } from "react";
 // Components
 import ContainerBase from "../items/container-base/container-base";
 import TextFieldBase from "../items/text-field-base/text-field-base";
 import TypographyBase from "../items/typography-base/typography-base";
 import DialogBase from "../items/dialog-base/dialog-base";
 import BoxBase from "../items/box-base/box-base";
+import ToggleButtonBase from "../items/toggle-button-base/toggle-button-base.component";
 
 import { useInputChange } from "../../helper/useInputChange";
 // Styles
@@ -26,14 +27,15 @@ const reducer = (state, action) => {
 
 export default function LandingPage() {
   const classes = useStyles();
-  const INITIAL_STATE = { title: "", description: "" };
+  const INITIAL_INPUT_STATE = { title: "", description: "" };
 
   const [{ tasksList }, dispatch] = useReducer(reducer, { tasksList: [] });
+  const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
   const [input, setInput, handleInputChange] = useInputChange({
-    ...INITIAL_STATE,
+    ...INITIAL_INPUT_STATE,
   });
 
-  const handleAddBtnClick = (title, description) => (event) => {
+  const handleAddBtnClick = (title, description, toggleBtnValue) => (event) => {
     if (title) {
       dispatch({
         type: "ADD_TASK",
@@ -41,14 +43,18 @@ export default function LandingPage() {
           id: new Date().getTime(),
           title: title,
           description: description,
+          project: toggleBtnValue,
         },
       });
     }
-    setInput({ ...INITIAL_STATE });
+    setToggleBtnValue("Personal");
+    setInput({ ...INITIAL_INPUT_STATE });
   };
 
   const handleDeleteBtnClick = (task) => (event) =>
     dispatch({ type: "DELETE_TASK", task: task });
+
+  const handleToggleOnChange = (event, newValue) => setToggleBtnValue(newValue);
 
   return (
     <ContainerBase>
@@ -62,11 +68,23 @@ export default function LandingPage() {
         </TypographyBase>
         <DialogBase
           title="Add Task"
-          handleAddBtnClick={handleAddBtnClick(input.title, input.description)}
+          handleAddBtnClick={handleAddBtnClick(
+            input.title,
+            input.description,
+            toggleBtnValue
+          )}
           titleValue={input.title}
           className={classes.dialog}
         >
-          <BoxBase display="flex" flexDirection="column">
+          <BoxBase fontWeight="bold">
+            Project:
+            <ToggleButtonBase
+              toggleValueList={["Personal", "Work"]}
+              value={toggleBtnValue}
+              handleToggleOnChange={handleToggleOnChange}
+            />
+          </BoxBase>
+          <div className={classes.inputParent}>
             <TextFieldBase
               value={input.title}
               onChange={handleInputChange}
@@ -79,13 +97,17 @@ export default function LandingPage() {
               label="Description"
               name="description"
             />
-          </BoxBase>
+          </div>
         </DialogBase>
         {tasksList?.map((item, index) => (
           <div key={index} onClick={handleDeleteBtnClick(item)}>
             {item.id}
+            <br />
             {item.title}
+            <br />
             {item.description}
+            <br />
+            {item.project}
           </div>
         ))}
       </BoxBase>
