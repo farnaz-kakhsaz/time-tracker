@@ -17,25 +17,25 @@ export default function DialogBase({
 }) {
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleOpenDialog = () => setOpenDialog(true);
+  const handleOpenAndCloseDialog = () => setOpenDialog(!openDialog);
 
-  const handleCloseDialog = () => {
+  const handleDoneDialog = () => {
     setOpenDialog(false);
     handleAddBtnClick();
   };
 
   return (
     <>
-      <Dialog open={openDialog} {...rest}>
+      <Dialog open={openDialog} onClose={handleOpenAndCloseDialog} {...rest}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          <ButtonBase onClick={handleCloseDialog} disabled={!titleValue}>
+          <ButtonBase onClick={handleDoneDialog} disabled={!titleValue}>
             Done
           </ButtonBase>
         </DialogActions>
       </Dialog>
-      <ButtonBase onClick={handleOpenDialog} color="primary">
+      <ButtonBase onClick={handleOpenAndCloseDialog} color="primary">
         Add Task
       </ButtonBase>
     </>
