@@ -1,10 +1,12 @@
-import { useState, useReducer } from "react";
+import { useReducer } from "react";
 // Components
 import ContainerBase from "../items/container-base/container-base";
 import TextFieldBase from "../items/text-field-base/text-field-base";
 import TypographyBase from "../items/typography-base/typography-base";
 import DialogBase from "../items/dialog-base/dialog-base";
 import BoxBase from "../items/box-base/box-base";
+
+import { useInputChange } from "../../helper/useInputChange";
 // Styles
 import { useStyles } from "./landing-page.styles";
 
@@ -22,18 +24,14 @@ const reducer = (state, action) => {
   }
 };
 
-const initialState = { title: "", description: "" };
-
 export default function LandingPage() {
   const classes = useStyles();
-  const [state, setState] = useState({ initialState });
-  const [{ tasksList }, dispatch] = useReducer(reducer, { tasksList: [] });
+  const INITIAL_STATE = { title: "", description: "" };
 
-  const handleInputChange = (event) =>
-    setState((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
+  const [{ tasksList }, dispatch] = useReducer(reducer, { tasksList: [] });
+  const [input, setInput, handleInputChange] = useInputChange({
+    ...INITIAL_STATE,
+  });
 
   const handleAddBtnClick = (title, description) => (event) => {
     if (title) {
@@ -46,7 +44,7 @@ export default function LandingPage() {
         },
       });
     }
-    setState({ ...initialState });
+    setInput({ ...INITIAL_STATE });
   };
 
   const handleDeleteBtnClick = (task) => (event) =>
@@ -64,21 +62,24 @@ export default function LandingPage() {
         </TypographyBase>
         <DialogBase
           title="Add Task"
-          handleAddBtnClick={handleAddBtnClick(state.title, state.description)}
-          titleValue={state.title}
+          handleAddBtnClick={handleAddBtnClick(input.title, input.description)}
+          titleValue={input.title}
+          className={classes.dialog}
         >
-          <TextFieldBase
-            value={state.title}
-            onChange={handleInputChange}
-            label="Title"
-            name="title"
-          />
-          <TextFieldBase
-            value={state.description}
-            onChange={handleInputChange}
-            label="Description"
-            name="description"
-          />
+          <BoxBase display="flex" flexDirection="column">
+            <TextFieldBase
+              value={input.title}
+              onChange={handleInputChange}
+              label="Title"
+              name="title"
+            />
+            <TextFieldBase
+              value={input.description}
+              onChange={handleInputChange}
+              label="Description"
+              name="description"
+            />
+          </BoxBase>
         </DialogBase>
         {tasksList?.map((item, index) => (
           <div key={index} onClick={handleDeleteBtnClick(item)}>
