@@ -6,47 +6,58 @@ import {
   DialogActions,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
+import clsx from "clsx";
+// Components
 import ButtonBase from "../button-base/button-base";
 // Styles
 import { useStyles } from "./dialog-base.styles";
 export default function DialogBase({
   children,
-  titleValue,
   title,
+  inputValue,
   handleAddBtnClick,
   handleSetDefaultState,
   ...rest
 }) {
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState(false);
+  const [shakeDialog, setShakeDialog] = useState(false);
 
-  const handleOpenAndCloseDialog = () => setOpenDialog(!openDialog);
+  const handleClickAddTask = () => setOpenDialog(!openDialog);
 
-  const handleDoneDialog = () => {
+  const handleCloseDialog = () =>
+    inputValue.title ? setShakeDialog(true) : handleClickClose();
+
+  const handleClickDone = () => {
     setOpenDialog(false);
     handleAddBtnClick();
   };
 
-  const handleCloseState = () => {
+  const handleClickClose = () => {
     setOpenDialog(false);
     handleSetDefaultState();
   };
 
+  const handleAnimationEnd = () => setShakeDialog(false);
+
   return (
     <>
       <Dialog
+        // className={}
+        classes={{ paper: clsx({ [classes.dialogPaper]: shakeDialog }) }}
         fullWidth
         open={openDialog}
-        onClose={handleOpenAndCloseDialog}
+        onClose={handleCloseDialog}
+        onAnimationEnd={handleAnimationEnd}
         {...rest}
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <ButtonBase onClick={handleCloseState}>Close</ButtonBase>
+          <ButtonBase onClick={handleClickDone}>Close</ButtonBase>
           <ButtonBase
-            onClick={handleDoneDialog}
-            disabled={!titleValue}
+            onClick={handleClickClose}
+            disabled={!inputValue.title}
             color="secondary"
             variant="contained"
           >
@@ -55,7 +66,7 @@ export default function DialogBase({
         </DialogActions>
       </Dialog>
       <ButtonBase
-        onClick={handleOpenAndCloseDialog}
+        onClick={handleClickAddTask}
         variant="contained"
         color="primary"
       >
@@ -67,7 +78,8 @@ export default function DialogBase({
 
 DialogBase.propTypes = {
   children: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  inputValue: PropTypes.object.isRequired,
   handleAddBtnClick: PropTypes.func,
   handleSetDefaultState: PropTypes.func,
   rest: PropTypes.any,

@@ -79,8 +79,7 @@ export default function LandingPage() {
             toggleBtnValue
           )}
           handleSetDefaultState={handleSetDefaultState}
-          titleValue={input.title}
-          className={classes.dialog}
+          inputValue={input}
         >
           <BoxBase fontWeight="bold" mb={2} textAlign="right">
             {/* Project: */}
