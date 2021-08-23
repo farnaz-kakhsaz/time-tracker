@@ -3,7 +3,7 @@ import { useState, useReducer } from "react";
 import ContainerBase from "../items/container-base/container-base";
 import TextFieldBase from "../items/text-field-base/text-field-base";
 import TypographyBase from "../items/typography-base/typography-base";
-import DialogBase from "../items/dialog-base/dialog-base";
+import DialogBase from "../items/dialog-base/dialog-base.component";
 import BoxBase from "../items/box-base/box-base";
 import ToggleButtonBase from "../items/toggle-button-base/toggle-button-base.component";
 
@@ -47,6 +47,10 @@ export default function LandingPage() {
         },
       });
     }
+    handleSetDefaultState();
+  };
+
+  const handleSetDefaultState = () => {
     setToggleBtnValue("Personal");
     setInput({ ...INITIAL_INPUT_STATE });
   };
@@ -54,7 +58,8 @@ export default function LandingPage() {
   const handleDeleteBtnClick = (task) => (event) =>
     dispatch({ type: "DELETE_TASK", task: task });
 
-  const handleToggleOnChange = (event, newValue) => setToggleBtnValue(newValue);
+  const handleToggleOnChange = (event, newValue) =>
+    newValue !== null && setToggleBtnValue(newValue);
 
   return (
     <ContainerBase>
@@ -73,11 +78,12 @@ export default function LandingPage() {
             input.description,
             toggleBtnValue
           )}
+          handleSetDefaultState={handleSetDefaultState}
           titleValue={input.title}
           className={classes.dialog}
         >
-          <BoxBase fontWeight="bold">
-            Project:
+          <BoxBase fontWeight="bold" mb={2} textAlign="right">
+            {/* Project: */}
             <ToggleButtonBase
               toggleValueList={["Personal", "Work"]}
               value={toggleBtnValue}
@@ -102,11 +108,8 @@ export default function LandingPage() {
         {tasksList?.map((item, index) => (
           <div key={index} onClick={handleDeleteBtnClick(item)}>
             {item.id}
-            <br />
             {item.title}
-            <br />
             {item.description}
-            <br />
             {item.project}
           </div>
         ))}

@@ -14,7 +14,7 @@ export default function DialogBase({
   titleValue,
   title,
   handleAddBtnClick,
-  handleClearState,
+  handleSetDefaultState,
   ...rest
 }) {
   const classes = useStyles();
@@ -29,7 +29,7 @@ export default function DialogBase({
 
   const handleCloseState = () => {
     setOpenDialog(false);
-    handleAddBtnClick();
+    handleSetDefaultState();
   };
 
   return (
@@ -69,6 +69,6 @@ DialogBase.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   handleAddBtnClick: PropTypes.func,
-  handleClearState: PropTypes.func,
+  handleSetDefaultState: PropTypes.func,
   rest: PropTypes.any,
 };
