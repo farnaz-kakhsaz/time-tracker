@@ -23,17 +23,17 @@ export default function DialogBase({
   const [openDialog, setOpenDialog] = useState(false);
   const [shakeDialog, setShakeDialog] = useState(false);
 
-  const handleClickAddTask = () => setOpenDialog(!openDialog);
+  const handleClickOpenDialogBtn = () => setOpenDialog(true);
 
   const handleCloseDialog = () =>
-    inputValue.title ? setShakeDialog(true) : handleClickClose();
+    inputValue.title ? setShakeDialog(true) : handleClickCloseBtn();
 
-  const handleClickDone = () => {
+  const handleClickAddTaskBtn = () => {
     setOpenDialog(false);
     handleAddBtnClick();
   };
 
-  const handleClickClose = () => {
+  const handleClickCloseBtn = () => {
     setOpenDialog(false);
     handleSetDefaultState();
   };
@@ -54,9 +54,9 @@ export default function DialogBase({
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <ButtonBase onClick={handleClickDone}>Close</ButtonBase>
+          <ButtonBase onClick={handleClickCloseBtn}>Close</ButtonBase>
           <ButtonBase
-            onClick={handleClickClose}
+            onClick={handleClickAddTaskBtn}
             disabled={!inputValue.title}
             color="secondary"
             variant="contained"
@@ -66,7 +66,7 @@ export default function DialogBase({
         </DialogActions>
       </Dialog>
       <ButtonBase
-        onClick={handleClickAddTask}
+        onClick={handleClickOpenDialogBtn}
         variant="contained"
         color="primary"
       >
