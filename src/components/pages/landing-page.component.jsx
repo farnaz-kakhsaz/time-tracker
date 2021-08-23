@@ -6,6 +6,7 @@ import TypographyBase from "../items/typography-base/typography-base";
 import DialogBase from "../items/dialog-base/dialog-base.component";
 import BoxBase from "../items/box-base/box-base";
 import ToggleButtonBase from "../items/toggle-button-base/toggle-button-base.component";
+import SwitchBase from "../items/switch-base/switch-base";
 
 import { useInputChange } from "../../helper/useInputChange";
 // Styles
@@ -31,6 +32,7 @@ export default function LandingPage() {
 
   const [{ tasksList }, dispatch] = useReducer(reducer, { tasksList: [] });
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
+  const [switchChecked, setSwitchChecked] = useState(true);
   const [input, setInput, handleInputChange] = useInputChange({
     ...INITIAL_INPUT_STATE,
   });
@@ -53,6 +55,7 @@ export default function LandingPage() {
   const handleSetDefaultState = () => {
     setToggleBtnValue("Personal");
     setInput({ ...INITIAL_INPUT_STATE });
+    setSwitchChecked(true);
   };
 
   const handleDeleteBtnClick = (task) => (event) =>
@@ -60,6 +63,8 @@ export default function LandingPage() {
 
   const handleToggleOnChange = (event, newValue) =>
     newValue !== null && setToggleBtnValue(newValue);
+
+  const handleSwitchChange = (event) => setSwitchChecked(event.target.checked);
 
   return (
     <ContainerBase>
@@ -81,13 +86,29 @@ export default function LandingPage() {
           handleSetDefaultState={handleSetDefaultState}
           inputValue={input}
         >
-          <BoxBase fontWeight="bold" mb={2} textAlign="right">
-            {/* Project: */}
-            <ToggleButtonBase
-              toggleValueList={["Personal", "Work"]}
-              value={toggleBtnValue}
-              handleToggleOnChange={handleToggleOnChange}
-            />
+          <BoxBase
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            fontWeight="bold"
+            fontSize="16px"
+            mb={2}
+          >
+            <div className={classes.startTimerParent}>
+              Start Timer:
+              <SwitchBase
+                handleSwitchChange={handleSwitchChange}
+                switchChecked={switchChecked}
+              />
+            </div>
+            <div className={classes.projectParent}>
+              Project:
+              <ToggleButtonBase
+                toggleValueList={["Personal", "Work"]}
+                value={toggleBtnValue}
+                handleToggleOnChange={handleToggleOnChange}
+              />
+            </div>
           </BoxBase>
           <div className={classes.inputParent}>
             <TextFieldBase
@@ -101,6 +122,8 @@ export default function LandingPage() {
               onChange={handleInputChange}
               label="Description"
               name="description"
+              multiline
+              rows={4}
             />
           </div>
         </DialogBase>
