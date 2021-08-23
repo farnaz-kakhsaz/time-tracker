@@ -10,7 +10,15 @@ export default function ToggleButtonBase({
 }) {
   const classes = useStyles();
   return (
-    <ToggleButtonGroup value={value} exclusive onChange={handleToggleOnChange}>
+    <ToggleButtonGroup
+      classes={{
+        root: classes.toggleButtonGroupRoot,
+        grouped: classes.toggleButtonGroupGrouped,
+      }}
+      value={value}
+      exclusive
+      onChange={handleToggleOnChange}
+    >
       {toggleValueList.map((item, index) => (
         <ToggleButton
           classes={{
