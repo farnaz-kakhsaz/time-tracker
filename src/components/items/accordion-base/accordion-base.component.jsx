@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Accordion,
@@ -30,7 +30,6 @@ export default function AccordionBase({
       }}
       expanded={expanded === item.id}
       onChange={handleAccordionExpandChange(item.id)}
-      square
     >
       <AccordionSummary
         classes={{
@@ -41,6 +40,7 @@ export default function AccordionBase({
         aria-controls={item.title}
         id={item.id}
       >
+        <div className={classes.title}>{item.title}</div>
         <Timer
           switchChecked={switchChecked}
           handleSetDefaultState={handleSetDefaultState}
