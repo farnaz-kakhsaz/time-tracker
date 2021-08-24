@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
+// Components
+import IconButtonBase from "../items/icon-button-base/icon-button-base";
 // Icons
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -36,19 +38,45 @@ export default function Timer({ switchChecked, handleSetDefaultState }) {
   };
 
   return (
-    <>
+    <div className={classes.root}>
       {timerOn ? (
         <>
-          <PauseIcon onClick={handleClickPauseBtn} />
+          <IconButtonBase
+            className={classes.iconButton}
+            color="primary"
+            ariaLabel="Pause"
+            onClick={handleClickPauseBtn}
+          >
+            <PauseIcon />
+          </IconButtonBase>
         </>
       ) : (
         <>
-          <PlayArrowIcon onClick={handleClickPlayBtn} />
+          <IconButtonBase
+            className={classes.iconButton}
+            color="secondary"
+            ariaLabel="Play"
+            onClick={handleClickPlayBtn}
+          >
+            <PlayArrowIcon />
+          </IconButtonBase>
         </>
       )}
-      {time ? <StopIcon onClick={handleClickStopBtn} /> : ""}
-      {minute}:{second}:{millisecond}
-    </>
+      {time ? (
+        <IconButtonBase
+          className={classes.iconButton}
+          ariaLabel="Stop"
+          onClick={handleClickStopBtn}
+        >
+          <StopIcon />
+        </IconButtonBase>
+      ) : (
+        ""
+      )}
+      <div className={classes.time}>
+        {minute}:{second}:{millisecond}
+      </div>
+    </div>
   );
 }
 
