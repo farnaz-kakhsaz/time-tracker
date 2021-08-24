@@ -7,7 +7,8 @@ import DialogBase from "../items/dialog-base/dialog-base.component";
 import BoxBase from "../items/box-base/box-base";
 import ToggleButtonBase from "../items/toggle-button-base/toggle-button-base.component";
 import SwitchBase from "../items/switch-base/switch-base";
-
+import AccordionBase from "../items/accordion-base/accordion-base.component";
+// Helper
 import { useInputChange } from "../../helper/useInputChange";
 // Styles
 import { useStyles } from "./landing-page.styles";
@@ -33,23 +34,21 @@ export default function LandingPage() {
   const [{ tasksList }, dispatch] = useReducer(reducer, { tasksList: [] });
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
   const [switchChecked, setSwitchChecked] = useState(true);
+
   const [input, setInput, handleInputChange] = useInputChange({
     ...INITIAL_INPUT_STATE,
   });
 
   const handleAddBtnClick = (title, description, toggleBtnValue) => (event) => {
-    if (title) {
-      dispatch({
-        type: "ADD_TASK",
-        task: {
-          id: new Date().getTime(),
-          title: title,
-          description: description,
-          project: toggleBtnValue,
-        },
-      });
-    }
-    handleSetDefaultState();
+    dispatch({
+      type: "ADD_TASK",
+      task: {
+        id: new Date().getTime(),
+        title: title,
+        description: description,
+        project: toggleBtnValue,
+      },
+    });
   };
 
   const handleSetDefaultState = () => {
@@ -74,8 +73,9 @@ export default function LandingPage() {
           variant="h2"
           component="h1"
         >
-          Time Tracher
+          Time Tracker
         </TypographyBase>
+
         <DialogBase
           title="Add Task"
           handleAddBtnClick={handleAddBtnClick(
@@ -128,12 +128,12 @@ export default function LandingPage() {
           </div>
         </DialogBase>
         {tasksList?.map((item, index) => (
-          <div key={index} onClick={handleDeleteBtnClick(item)}>
-            {item.id}
-            {item.title}
-            {item.description}
-            {item.project}
-          </div>
+          <AccordionBase
+            handleSetDefaultState={handleSetDefaultState}
+            item={item}
+            switchChecked={switchChecked}
+            key={index}
+          />
         ))}
       </BoxBase>
     </ContainerBase>

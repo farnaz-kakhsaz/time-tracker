@@ -43,7 +43,6 @@ export default function DialogBase({
   return (
     <>
       <Dialog
-        // className={}
         classes={{ paper: clsx({ [classes.dialogPaper]: shakeDialog }) }}
         fullWidth
         open={openDialog}
