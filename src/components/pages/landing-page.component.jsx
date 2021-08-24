@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useEffect, useState, useReducer } from "react";
 // Components
 import ContainerBase from "../items/container-base/container-base";
 import TextFieldBase from "../items/text-field-base/text-field-base";
@@ -31,13 +31,20 @@ export default function LandingPage() {
   const classes = useStyles();
   const INITIAL_INPUT_STATE = { title: "", description: "" };
 
-  const [{ tasksList }, dispatch] = useReducer(reducer, { tasksList: [] });
+  const [{ tasksList }, dispatch] = useReducer(reducer, {
+    tasksList: JSON.parse(localStorage.getItem("tasksList")) || [],
+  });
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
-  const [switchChecked, setSwitchChecked] = useState(true);
+  const [switchChecked, setSwitchChecked] = useState(false);
 
   const [input, setInput, handleInputChange] = useInputChange({
     ...INITIAL_INPUT_STATE,
   });
+
+  useEffect(
+    () => localStorage.setItem("tasksList", JSON.stringify(tasksList)),
+    [tasksList]
+  );
 
   const handleAddBtnClick = (title, description, toggleBtnValue) => (event) => {
     dispatch({
@@ -54,7 +61,7 @@ export default function LandingPage() {
   const handleSetDefaultState = () => {
     setToggleBtnValue("Personal");
     setInput({ ...INITIAL_INPUT_STATE });
-    setSwitchChecked(true);
+    setSwitchChecked(false);
   };
 
   const handleDeleteBtnClick = (task) => (event) =>
@@ -129,10 +136,10 @@ export default function LandingPage() {
         </DialogBase>
         {tasksList?.map((item, index) => (
           <AccordionBase
-            handleSetDefaultState={handleSetDefaultState}
             item={item}
             switchChecked={switchChecked}
             key={index}
+            handleSetDefaultState={handleSetDefaultState}
           />
         ))}
       </BoxBase>

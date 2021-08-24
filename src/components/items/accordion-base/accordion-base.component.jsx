@@ -42,6 +42,7 @@ export default function AccordionBase({
       >
         <div className={classes.title}>{item.title}</div>
         <Timer
+          id={item.id}
           switchChecked={switchChecked}
           handleSetDefaultState={handleSetDefaultState}
         />
@@ -59,5 +60,6 @@ export default function AccordionBase({
 
 AccordionBase.propTypes = {
   item: PropTypes.object.isRequired,
+  handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
 };

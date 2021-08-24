@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export const useTime = () => {
-  const [time, setTime] = useState(0);
+export const useTime = (timeFromId = 0) => {
+  const [time, setTime] = useState(timeFromId);
   const [timerOn, setTimerOn] = useState(false);
 
   useEffect(() => {

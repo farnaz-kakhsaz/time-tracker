@@ -12,16 +12,29 @@ import { getTimeFormat } from "../../helper/getTimeFormat";
 // Styles
 import { useStyles } from "./timer.styles";
 
-export default function Timer({ switchChecked, handleSetDefaultState }) {
+export default function Timer({ id, switchChecked, handleSetDefaultState }) {
   const classes = useStyles();
-
-  const [time, setTime, timerOn, setTimerOn] = useTime();
+  const [time, setTime, timerOn, setTimerOn] = useTime(
+    localStorage.getItem("time")
+      ? JSON.parse(localStorage.getItem("time"))[id]
+      : 0
+  );
   const [minute, second, millisecond] = getTimeFormat(time);
 
   useEffect(() => {
     if (switchChecked) setTimerOn(true);
     handleSetDefaultState();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "time",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("time")),
+        [id]: time,
+      })
+    );
+  }, [timerOn]);
 
   const handleClickPlayBtn = (event) => {
     event.stopPropagation();
@@ -81,6 +94,7 @@ export default function Timer({ switchChecked, handleSetDefaultState }) {
 }
 
 Timer.propTypes = {
-  switchChecked: PropTypes.bool.isRequired,
+  id: PropTypes.number.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
+  switchChecked: PropTypes.bool.isRequired,
 };
