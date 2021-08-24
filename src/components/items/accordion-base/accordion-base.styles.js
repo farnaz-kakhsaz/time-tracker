@@ -49,5 +49,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   accordionDetails: {
     textAlign: "left",
+    flexDirection: "column",
   },
 }));

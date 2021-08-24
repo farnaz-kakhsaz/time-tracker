@@ -16,7 +16,7 @@ export default function Timer({ id, switchChecked, handleSetDefaultState }) {
   const classes = useStyles();
   const [time, setTime, timerOn, setTimerOn] = useTime(
     localStorage.getItem("time")
-      ? JSON.parse(localStorage.getItem("time"))[id]
+      ? JSON.parse(localStorage.getItem("time"))[id]?.time
       : 0
   );
   const [minute, second, millisecond] = getTimeFormat(time);
@@ -31,7 +31,10 @@ export default function Timer({ id, switchChecked, handleSetDefaultState }) {
       "time",
       JSON.stringify({
         ...JSON.parse(localStorage.getItem("time")),
-        [id]: time,
+        [id]: {
+          ...JSON.parse(localStorage.getItem("time"))[id],
+          time,
+        },
       })
     );
   }, [timerOn]);

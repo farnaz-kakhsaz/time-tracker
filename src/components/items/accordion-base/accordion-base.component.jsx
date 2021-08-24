@@ -6,6 +6,7 @@ import {
   AccordionDetails,
 } from "@material-ui/core";
 // Components
+import BoxBase from "../box-base/box-base";
 import Timer from "../../timer/timer.component";
 import IconButtonBase from "../icon-button-base/icon-button-base";
 // Icon
@@ -58,6 +59,16 @@ export default function AccordionBase({
         </div>
       </AccordionSummary>
       <AccordionDetails className={classes.accordionDetails}>
+        <BoxBase
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          my={2}
+          color="text.secondary"
+        >
+          <div>Created Time: {item.createdTime}</div>
+          <div>Project: {item.project}</div>
+        </BoxBase>
         {item.description}
       </AccordionDetails>
     </Accordion>

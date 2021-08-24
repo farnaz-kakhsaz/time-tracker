@@ -54,6 +54,7 @@ export default function LandingPage() {
         title: title,
         description: description,
         project: toggleBtnValue,
+        createdTime: new Date().toLocaleString(),
       },
     });
   };
