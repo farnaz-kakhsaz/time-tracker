@@ -16,5 +16,5 @@ export const useTime = () => {
     return () => clearInterval(interval);
   }, [timerOn]);
 
-  return [time, setTime, setTimerOn];
+  return [time, setTime, timerOn, setTimerOn];
 };
