@@ -44,6 +44,9 @@ export const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     fontWeight: "bold",
   },
+  timerParent: {
+    display: "flex",
+  },
   accordionDetails: {
     textAlign: "left",
   },

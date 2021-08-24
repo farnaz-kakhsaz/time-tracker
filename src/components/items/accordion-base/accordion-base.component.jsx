@@ -7,12 +7,16 @@ import {
 } from "@material-ui/core";
 // Components
 import Timer from "../../timer/timer.component";
+import IconButtonBase from "../icon-button-base/icon-button-base";
+// Icon
+import Delete from "@material-ui/icons/Delete";
 // Styles
 import { useStyles } from "./accordion-base.styles";
 export default function AccordionBase({
   item,
   index,
   switchChecked,
+  handleDeleteBtnClick,
   handleSetDefaultState,
   ...rest
 }) {
@@ -30,6 +34,7 @@ export default function AccordionBase({
       }}
       expanded={expanded === item.id}
       onChange={handleAccordionExpandChange(item.id)}
+      square
     >
       <AccordionSummary
         classes={{
@@ -41,18 +46,19 @@ export default function AccordionBase({
         id={item.id}
       >
         <div className={classes.title}>{item.title}</div>
-        <Timer
-          id={item.id}
-          switchChecked={switchChecked}
-          handleSetDefaultState={handleSetDefaultState}
-        />
+        <div className={classes.timerParent}>
+          <Timer
+            id={item.id}
+            switchChecked={switchChecked}
+            handleSetDefaultState={handleSetDefaultState}
+          />
+          <IconButtonBase onClick={handleDeleteBtnClick(item)}>
+            <Delete />
+          </IconButtonBase>
+        </div>
       </AccordionSummary>
       <AccordionDetails className={classes.accordionDetails}>
         {item.description}
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam nam
-        quam dolores atque dicta praesentium accusamus voluptatem accusantium?
-        Odio mollitia quis odit porro quo modi necessitatibus deserunt doloribus
-        officia sequi?
       </AccordionDetails>
     </Accordion>
   );
@@ -60,6 +66,7 @@ export default function AccordionBase({
 
 AccordionBase.propTypes = {
   item: PropTypes.object.isRequired,
+  handleDeleteBtnClick: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
 };

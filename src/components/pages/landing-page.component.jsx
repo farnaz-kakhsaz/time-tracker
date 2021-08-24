@@ -134,14 +134,17 @@ export default function LandingPage() {
             />
           </div>
         </DialogBase>
-        {tasksList?.map((item, index) => (
-          <AccordionBase
-            item={item}
-            switchChecked={switchChecked}
-            key={index}
-            handleSetDefaultState={handleSetDefaultState}
-          />
-        ))}
+        <BoxBase mt={5}>
+          {tasksList?.map((item, index) => (
+            <AccordionBase
+              item={item}
+              switchChecked={switchChecked}
+              key={index}
+              handleSetDefaultState={handleSetDefaultState}
+              handleDeleteBtnClick={handleDeleteBtnClick}
+            />
+          ))}
+        </BoxBase>
       </BoxBase>
     </ContainerBase>
   );

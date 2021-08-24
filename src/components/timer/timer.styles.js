@@ -11,6 +11,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   time: {
     fontSize: theme.typography.fontSize + 2,
-    marginLeft: theme.spacing(2.25),
+    margin: theme.spacing(0, 2.25),
   },
 }));
