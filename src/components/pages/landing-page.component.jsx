@@ -135,7 +135,12 @@ export default function LandingPage() {
             />
           </div>
         </DialogBase>
-        <BoxBase mt={5}>
+        <BoxBase
+          mt={5}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
           {tasksList?.map((item, index) => (
             <AccordionBase
               item={item}

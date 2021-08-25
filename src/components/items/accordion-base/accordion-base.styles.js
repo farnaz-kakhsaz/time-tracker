@@ -8,17 +8,13 @@ export const useStyles = makeStyles((theme) => ({
     "&:before": {
       display: "none",
     },
-    "&$accorionExpanded": {
-      margin: `${theme.spacing(2)}px auto`,
-    },
     maxWidth: theme.spacing(70),
-    margin: "auto",
+    width: "100%",
     border: "1px solid rgba(0, 0, 0, .125)",
     borderRadius: theme.shape.borderRadius + 10,
     overflow: "hidden",
     boxShadow: "none",
   },
-  accorionExpanded: {},
   accordionSummaryRoot: {
     backgroundColor: "rgba(0, 0, 0, .03)",
     borderBottom: "1px solid rgba(0, 0, 0, .125)",

@@ -31,7 +31,6 @@ export default function AccordionBase({
     <Accordion
       classes={{
         root: classes.accordionRoot,
-        expanded: classes.accorionExpanded,
       }}
       expanded={expanded === item.id}
       onChange={handleAccordionExpandChange(item.id)}
