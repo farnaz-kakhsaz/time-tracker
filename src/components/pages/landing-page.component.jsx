@@ -13,10 +13,29 @@ import { useInputChange } from "../../helper/useInputChange";
 // Styles
 import { useStyles } from "./landing-page.styles";
 
+const initialState = {
+  tasksList: JSON.parse(localStorage.getItem("tasksList")) || [],
+  newTask: {
+    id: "",
+    title: "",
+    description: "",
+    project: "Personal",
+    createdTime: "",
+    time: 0,
+  },
+};
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TASK":
       return { ...state, tasksList: [...state.tasksList, action.task] };
+    case "UPDATE_TIME":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? action.task : task
+        ),
+      };
     case "DELETE_TASK":
       return {
         ...state,
@@ -31,9 +50,7 @@ export default function LandingPage() {
   const classes = useStyles();
   const INITIAL_INPUT_STATE = { title: "", description: "" };
 
-  const [{ tasksList }, dispatch] = useReducer(reducer, {
-    tasksList: JSON.parse(localStorage.getItem("tasksList")) || [],
-  });
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
   const [switchChecked, setSwitchChecked] = useState(false);
 
@@ -42,8 +59,8 @@ export default function LandingPage() {
   });
 
   useEffect(
-    () => localStorage.setItem("tasksList", JSON.stringify(tasksList)),
-    [tasksList]
+    () => localStorage.setItem("tasksList", JSON.stringify(state.tasksList)),
+    [state.tasksList]
   );
 
   const handleAddBtnClick = (title, description, toggleBtnValue) => (event) => {
@@ -55,8 +72,17 @@ export default function LandingPage() {
         description: description,
         project: toggleBtnValue,
         createdTime: new Date().toLocaleString(),
+        time: 0,
       },
     });
+  };
+
+  const handleDeleteBtnClick = (task) => (event) =>
+    dispatch({ type: "DELETE_TASK", task: task });
+
+  const handleUpdateTimeBtnClick = (task, time) => {
+    const newTask = { ...task, time };
+    dispatch({ type: "UPDATE_TIME", task: newTask });
   };
 
   const handleSetDefaultState = () => {
@@ -64,9 +90,6 @@ export default function LandingPage() {
     setInput({ ...INITIAL_INPUT_STATE });
     setSwitchChecked(false);
   };
-
-  const handleDeleteBtnClick = (task) => (event) =>
-    dispatch({ type: "DELETE_TASK", task: task });
 
   const handleToggleOnChange = (event, newValue) =>
     newValue !== null && setToggleBtnValue(newValue);
@@ -141,11 +164,12 @@ export default function LandingPage() {
           flexDirection="column"
           alignItems="center"
         >
-          {tasksList?.map((item, index) => (
+          {state.tasksList?.map((task, index) => (
             <AccordionBase
-              item={item}
+              task={task}
               switchChecked={switchChecked}
               key={index}
+              handleUpdateTimeBtnClick={handleUpdateTimeBtnClick}
               handleSetDefaultState={handleSetDefaultState}
               handleDeleteBtnClick={handleDeleteBtnClick}
             />

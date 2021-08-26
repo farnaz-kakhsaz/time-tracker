@@ -14,9 +14,10 @@ import Delete from "@material-ui/icons/Delete";
 // Styles
 import { useStyles } from "./accordion-base.styles";
 export default function AccordionBase({
-  item,
+  task,
   index,
   switchChecked,
+  handleUpdateTimeBtnClick,
   handleDeleteBtnClick,
   handleSetDefaultState,
   ...rest
@@ -32,8 +33,8 @@ export default function AccordionBase({
       classes={{
         root: classes.accordionRoot,
       }}
-      expanded={expanded === item.id}
-      onChange={handleAccordionExpandChange(item.id)}
+      expanded={expanded === task.id}
+      onChange={handleAccordionExpandChange(task.id)}
       square
     >
       <AccordionSummary
@@ -42,17 +43,18 @@ export default function AccordionBase({
           content: classes.accordionSummaryContent,
           expanded: classes.accordionSummaryExpanded,
         }}
-        aria-controls={item.title}
-        id={item.id}
+        aria-controls={task.title}
+        id={task.id}
       >
-        <div className={classes.title}>{item.title}</div>
+        <div className={classes.title}>{task.title}</div>
         <div className={classes.timerParent}>
           <Timer
-            id={item.id}
+            task={task}
             switchChecked={switchChecked}
+            handleUpdateTimeBtnClick={handleUpdateTimeBtnClick}
             handleSetDefaultState={handleSetDefaultState}
           />
-          <IconButtonBase onClick={handleDeleteBtnClick(item)}>
+          <IconButtonBase onClick={handleDeleteBtnClick(task)}>
             <Delete />
           </IconButtonBase>
         </div>
@@ -65,17 +67,18 @@ export default function AccordionBase({
           my={2}
           color="text.secondary"
         >
-          <div>Created Time: {item.createdTime}</div>
-          <div>Project: {item.project}</div>
+          <div>Created Time: {task.createdTime}</div>
+          <div>Project: {task.project}</div>
         </BoxBase>
-        {item.description}
+        {task.description}
       </AccordionDetails>
     </Accordion>
   );
 }
 
 AccordionBase.propTypes = {
-  item: PropTypes.object.isRequired,
+  task: PropTypes.object.isRequired,
+  handleUpdateTimeBtnClick: PropTypes.func.isRequired,
   handleDeleteBtnClick: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
