@@ -21,6 +21,7 @@ const initialState = {
     description: "",
     project: "Personal",
     createdTime: "",
+    done: false,
     time: 0,
   },
 };
@@ -34,6 +35,20 @@ const reducer = (state, action) => {
         ...state,
         tasksList: state.tasksList.map((task) =>
           task.id === action.task.id ? action.task : task
+        ),
+      };
+    case "DONE_TASK":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? { ...task, done: true } : task
+        ),
+      };
+    case "UNDONE_TASK":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? { ...task, done: false } : task
         ),
       };
     case "DELETE_TASK":
@@ -72,15 +87,26 @@ export default function LandingPage() {
         description: description,
         project: toggleBtnValue,
         createdTime: new Date().toLocaleString(),
+        done: false,
         time: 0,
       },
     });
   };
 
+  const handleDoneBtnClick = (task) => (event) => {
+    event.stopPropagation();
+    dispatch({ type: "DONE_TASK", task });
+  };
+
+  const handleUnDoneBtnClick = (task) => (event) => {
+    event.stopPropagation();
+    dispatch({ type: "UNDONE_TASK", task });
+  };
+
   const handleDeleteBtnClick = (task) => (event) =>
     dispatch({ type: "DELETE_TASK", task: task });
 
-  const handleUpdateTimeBtnClick = (task, time) => {
+  const handleUpdateTime = (task, time) => {
     const newTask = { ...task, time };
     dispatch({ type: "UPDATE_TIME", task: newTask });
   };
@@ -169,9 +195,11 @@ export default function LandingPage() {
               task={task}
               switchChecked={switchChecked}
               key={index}
-              handleUpdateTimeBtnClick={handleUpdateTimeBtnClick}
-              handleSetDefaultState={handleSetDefaultState}
+              handleUpdateTime={handleUpdateTime}
+              handleDoneBtnClick={handleDoneBtnClick}
+              handleUnDoneBtnClick={handleUnDoneBtnClick}
               handleDeleteBtnClick={handleDeleteBtnClick}
+              handleSetDefaultState={handleSetDefaultState}
             />
           ))}
         </BoxBase>

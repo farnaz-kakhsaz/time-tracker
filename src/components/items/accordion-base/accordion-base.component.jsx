@@ -10,19 +10,28 @@ import BoxBase from "../box-base/box-base";
 import Timer from "../../timer/timer.component";
 import IconButtonBase from "../icon-button-base/icon-button-base";
 // Icon
+import DoneIcon from "@material-ui/icons/Done";
 import Delete from "@material-ui/icons/Delete";
+import ClearIcon from "@material-ui/icons/Clear";
 // Styles
 import { useStyles } from "./accordion-base.styles";
 export default function AccordionBase({
   task,
   index,
   switchChecked,
-  handleUpdateTimeBtnClick,
+  handleUpdateTime,
+  handleDoneBtnClick,
+  handleUnDoneBtnClick,
   handleDeleteBtnClick,
   handleSetDefaultState,
   ...rest
 }) {
-  const classes = useStyles();
+  const props = {
+    backgroundColorSummary: task.done ? "#6fbf73" : "rgba(0, 0, 0, 0.03)",
+    backgroundColorDetails: task.done ? "rgba(111, 191, 115, 0.3)" : "white",
+    textDecoration: task.done ? "line-through" : "none",
+  };
+  const classes = useStyles(props);
   const [expanded, setExpanded] = useState();
 
   const handleAccordionExpandChange = (id) => (event, newExpanded) =>
@@ -51,9 +60,24 @@ export default function AccordionBase({
           <Timer
             task={task}
             switchChecked={switchChecked}
-            handleUpdateTimeBtnClick={handleUpdateTimeBtnClick}
+            handleUpdateTime={handleUpdateTime}
             handleSetDefaultState={handleSetDefaultState}
           />
+          {!task.done ? (
+            <IconButtonBase
+              className={classes.doneIcon}
+              onClick={handleDoneBtnClick(task)}
+            >
+              <DoneIcon />
+            </IconButtonBase>
+          ) : (
+            <IconButtonBase
+              color="secondary"
+              onClick={handleUnDoneBtnClick(task)}
+            >
+              <ClearIcon />
+            </IconButtonBase>
+          )}
           <IconButtonBase onClick={handleDeleteBtnClick(task)}>
             <Delete />
           </IconButtonBase>
@@ -78,8 +102,10 @@ export default function AccordionBase({
 
 AccordionBase.propTypes = {
   task: PropTypes.object.isRequired,
-  handleUpdateTimeBtnClick: PropTypes.func.isRequired,
+  handleUpdateTime: PropTypes.func.isRequired,
   handleDeleteBtnClick: PropTypes.func.isRequired,
+  handleDoneBtnClick: PropTypes.func.isRequired,
+  handleUnDoneBtnClick: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
 };

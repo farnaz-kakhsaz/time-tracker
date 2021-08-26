@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
   },
   accordionSummaryRoot: {
-    backgroundColor: "rgba(0, 0, 0, .03)",
+    backgroundColor: (props) => props.backgroundColorSummary,
     borderBottom: "1px solid rgba(0, 0, 0, .125)",
     marginBottom: -1,
     minHeight: 56,
@@ -39,12 +39,20 @@ export const useStyles = makeStyles((theme) => ({
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
     fontWeight: "bold",
+    textDecoration: (props) => props.textDecoration,
   },
   timerParent: {
     display: "flex",
   },
+  doneIcon: {
+    "&:hover": {
+      backgroundColor: "rgba(53, 122, 56, 0.04)",
+    },
+    color: theme.palette.tertiary.main,
+  },
   accordionDetails: {
     textAlign: "left",
     flexDirection: "column",
+    backgroundColor: (props) => props.backgroundColorDetails,
   },
 }));

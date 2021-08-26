@@ -15,7 +15,7 @@ import { useStyles } from "./timer.styles";
 export default function Timer({
   task,
   switchChecked,
-  handleUpdateTimeBtnClick,
+  handleUpdateTime,
   handleSetDefaultState,
 }) {
   const classes = useStyles();
@@ -29,52 +29,64 @@ export default function Timer({
 
   useEffect(() => setTime(task.time), [task]);
 
+  useEffect(() => {
+    if (task.done) {
+      handleUpdateTime(task, time);
+      setTimerOn(false);
+    }
+  }, [task.done]);
+
   const handleClickPlayBtn = (event) => {
     event.stopPropagation();
     setTimerOn(true);
   };
   const handleClickPauseBtn = (event) => {
     event.stopPropagation();
-    handleUpdateTimeBtnClick(task, time);
+    handleUpdateTime(task, time);
     setTimerOn(false);
   };
   const handleClickStopBtn = (event) => {
     event.stopPropagation();
+    handleUpdateTime(task, 0);
     setTimerOn(false);
     setTime(0);
   };
 
   return (
     <div className={classes.root}>
-      {timerOn ? (
-        <IconButtonBase
-          className={classes.iconButton}
-          color="primary"
-          ariaLabel="Pause"
-          onClick={handleClickPauseBtn}
-        >
-          <PauseIcon />
-        </IconButtonBase>
-      ) : (
-        <IconButtonBase
-          className={classes.iconButton}
-          color="secondary"
-          ariaLabel="Play"
-          onClick={handleClickPlayBtn}
-        >
-          <PlayArrowIcon />
-        </IconButtonBase>
-      )}
-      {time ? (
-        <IconButtonBase
-          className={classes.iconButton}
-          ariaLabel="Stop"
-          onClick={handleClickStopBtn}
-        >
-          <StopIcon />
-        </IconButtonBase>
-      ) : (
-        ""
+      {!task.done && (
+        <>
+          {timerOn ? (
+            <IconButtonBase
+              className={classes.iconButton}
+              color="primary"
+              ariaLabel="Pause"
+              onClick={handleClickPauseBtn}
+            >
+              <PauseIcon />
+            </IconButtonBase>
+          ) : (
+            <IconButtonBase
+              className={classes.iconButton}
+              color="secondary"
+              ariaLabel="Play"
+              onClick={handleClickPlayBtn}
+            >
+              <PlayArrowIcon />
+            </IconButtonBase>
+          )}
+          {time ? (
+            <IconButtonBase
+              className={classes.iconButton}
+              ariaLabel="Stop"
+              onClick={handleClickStopBtn}
+            >
+              <StopIcon />
+            </IconButtonBase>
+          ) : (
+            ""
+          )}
+        </>
       )}
       <div className={classes.time}>
         {minute}:{second}:{millisecond}
@@ -86,6 +98,6 @@ export default function Timer({
 Timer.propTypes = {
   task: PropTypes.object.isRequired,
   switchChecked: PropTypes.bool.isRequired,
-  handleUpdateTimeBtnClick: PropTypes.func.isRequired,
+  handleUpdateTime: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
 };
