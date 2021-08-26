@@ -3,8 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: "wrap",
+    justifyContent: "flex-end",
   },
   iconButton: {
     margin: theme.spacing(0, 0.5),

@@ -40,9 +40,12 @@ export const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     fontWeight: "bold",
     textDecoration: (props) => props.textDecoration,
+    maxWidth: theme.spacing(25),
   },
   timerParent: {
     display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "flex-end",
   },
   doneIcon: {
     "&:hover": {
