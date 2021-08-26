@@ -7,9 +7,6 @@ export const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "flex-end",
   },
-  iconButton: {
-    margin: theme.spacing(0, 0.5),
-  },
   time: {
     fontSize: theme.typography.fontSize + 2,
     margin: theme.spacing(0, 2.25),

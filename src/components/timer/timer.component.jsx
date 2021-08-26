@@ -41,7 +41,6 @@ export default function Timer({
   }, [task.done]);
 
   useEffect(() => {
-    console.log("checked");
     // When timer started (on first time) update startedTime in state
     if (time === 0 && timerOn)
       handleUpdateStartedTime(task, new Date().toLocaleTimeString());
