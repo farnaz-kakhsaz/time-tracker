@@ -3,11 +3,11 @@ import { useEffect, useState, useReducer } from "react";
 import ContainerBase from "../items/container-base/container-base";
 import TextFieldBase from "../items/text-field-base/text-field-base";
 import TypographyBase from "../items/typography-base/typography-base";
-import DialogBase from "../items/dialog-base/dialog-base.component";
+import Dialog from "../dialog/dialog.component";
 import BoxBase from "../items/box-base/box-base";
 import ToggleButtonBase from "../items/toggle-button-base/toggle-button-base.component";
 import SwitchBase from "../items/switch-base/switch-base";
-import AccordionBase from "../items/accordion-base/accordion-base.component";
+import Accordion from "../accordion/accordion.component";
 // Helper
 import { useInputChange } from "../../helper/useInputChange";
 // Styles
@@ -21,6 +21,7 @@ const initialState = {
     description: "",
     project: "Personal",
     createdTime: "",
+    editedTime: "",
     done: false,
     time: 0,
     startedTime: 0,
@@ -84,6 +85,8 @@ export default function LandingPage() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
   const [switchChecked, setSwitchChecked] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editMood, setEditMood] = useState(false);
 
   const [input, setInput, handleInputChange] = useInputChange({
     ...INITIAL_INPUT_STATE,
@@ -94,7 +97,7 @@ export default function LandingPage() {
     [state.tasksList]
   );
 
-  const handleAddBtnClick = (title, description, toggleBtnValue) => (event) => {
+  const handleAddTask = (title, description, toggleBtnValue) => (event) => {
     dispatch({
       type: "ADD_TASK",
       task: {
@@ -103,6 +106,7 @@ export default function LandingPage() {
         description: description,
         project: toggleBtnValue,
         createdTime: new Date().toLocaleString(),
+        editedTime: "",
         done: false,
         time: 0,
         startedTime: 0,
@@ -111,19 +115,21 @@ export default function LandingPage() {
     });
   };
 
-  const handleDoneBtnClick = (task) => (event) => {
+  const handleClickDoneBtn = (task) => (event) => {
     event.stopPropagation();
     handleUpdateFinishedTime(task, new Date().toLocaleTimeString());
     dispatch({ type: "DONE_TASK", task });
   };
 
-  const handleUnDoneBtnClick = (task) => (event) => {
+  const handleClickUnDoneBtn = (task) => (event) => {
     event.stopPropagation();
     dispatch({ type: "UNDONE_TASK", task });
   };
 
-  const handleDeleteBtnClick = (task) => (event) =>
+  const handleClickDeleteBtn = (task) => (event) => {
+    event.stopPropagation();
     dispatch({ type: "DELETE_TASK", task });
+  };
 
   const handleUpdateTime = (task, time) => {
     const newTask = { ...task, time: time };
@@ -162,15 +168,17 @@ export default function LandingPage() {
           Time Tracker
         </TypographyBase>
 
-        <DialogBase
-          title="Add Task"
-          handleAddBtnClick={handleAddBtnClick(
+        <Dialog
+          inputValue={input}
+          editMood={editMood}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          handleAddTask={handleAddTask(
             input.title,
             input.description,
             toggleBtnValue
           )}
           handleSetDefaultState={handleSetDefaultState}
-          inputValue={input}
         >
           <BoxBase
             display="flex"
@@ -212,7 +220,7 @@ export default function LandingPage() {
               rows={4}
             />
           </div>
-        </DialogBase>
+        </Dialog>
         <BoxBase
           mt={5}
           display="flex"
@@ -220,15 +228,15 @@ export default function LandingPage() {
           flexWrap="wrap"
         >
           {state.tasksList?.map((task, index) => (
-            <AccordionBase
+            <Accordion
+              key={index}
               task={task}
               switchChecked={switchChecked}
-              key={index}
-              handleDoneBtnClick={handleDoneBtnClick}
-              handleUnDoneBtnClick={handleUnDoneBtnClick}
+              handleClickDoneBtn={handleClickDoneBtn}
+              handleClickUnDoneBtn={handleClickUnDoneBtn}
               handleUpdateTime={handleUpdateTime}
               handleUpdateStartedTime={handleUpdateStartedTime}
-              handleDeleteBtnClick={handleDeleteBtnClick}
+              handleClickDeleteBtn={handleClickDeleteBtn}
               handleSetDefaultState={handleSetDefaultState}
             />
           ))}

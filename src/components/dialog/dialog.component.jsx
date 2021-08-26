@@ -43,8 +43,8 @@ export default function Dialog({
       onClose={handleCloseDialog}
       onAnimationEnd={handleAnimationEnd}
       dialogTilte={editMood ? "Edit Task" : "Add Task"}
+      classes={classes}
       classesDialog={{ paper: clsx({ [classes.dialogPaper]: shakeDialog }) }}
-      classNameDialogActions={classes.dialogActions}
       disabled={!inputValue.title}
       addOrEditBtnTitle={editMood ? "Edit Task" : "Add Task"}
       handleClickCloseBtn={handleClickCloseBtn}

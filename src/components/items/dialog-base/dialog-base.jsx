@@ -10,14 +10,14 @@ import ButtonBase from "../button-base/button-base";
 
 export default function DialogBase({
   children,
-  classesDialog,
   open,
   onClose,
   onAnimationEnd,
   dialogTilte,
   disabled,
   addOrEditBtnTitle,
-  classNameDialogActions,
+  classes,
+  classesDialog,
   handleClickCloseBtn,
   handleClickOpenDialogBtn,
   handleClickAddOrEditTask,
@@ -35,7 +35,7 @@ export default function DialogBase({
       >
         <DialogTitle>{dialogTilte}</DialogTitle>
         <DialogContent>{children}</DialogContent>
-        <DialogActions className={classNameDialogActions}>
+        <DialogActions className={classes.dialogActions}>
           <ButtonBase onClick={handleClickCloseBtn}>Close</ButtonBase>
           <ButtonBase
             onClick={handleClickAddOrEditTask}
@@ -64,8 +64,8 @@ DialogBase.propTypes = {
   dialogTilte: PropTypes.string.isRequired,
   disabled: PropTypes.bool.isRequired,
   addOrEditBtnTitle: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
   classesDialog: PropTypes.object.isRequired,
-  classNameDialogActions: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onAnimationEnd: PropTypes.func.isRequired,
   handleClickCloseBtn: PropTypes.func.isRequired,
