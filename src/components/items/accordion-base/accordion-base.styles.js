@@ -2,19 +2,25 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
   accordionRoot: {
+    "&$accordionExpanded": {
+      "&:first-child": {
+        margin: theme.spacing(2, 0),
+      },
+      margin: theme.spacing(2, 0),
+    },
     "&:last-child": {
       borderRadius: theme.shape.borderRadius + 10,
     },
-    "&:before": {
-      display: "none",
-    },
-    maxWidth: theme.spacing(70),
+    maxWidth: theme.spacing(73),
     width: "100%",
+    height: "100%",
     border: "1px solid rgba(0, 0, 0, .125)",
     borderRadius: theme.shape.borderRadius + 10,
     overflow: "hidden",
     boxShadow: "none",
+    margin: theme.spacing(2, 0),
   },
+  accordionExpanded: {},
   accordionSummaryRoot: {
     backgroundColor: (props) => props.backgroundColorSummary,
     borderBottom: "1px solid rgba(0, 0, 0, .125)",
@@ -33,7 +39,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   accordionSummaryExpanded: {},
   title: {
-    fontSize: theme.typography.fontSize + 2,
+    fontSize: theme.typography.fontSize + 3,
     display: "-webkit-box",
     WebkitLineClamp: 2,
     WebkitBoxOrient: "vertical",
@@ -46,6 +52,7 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "flex-end",
+    alignItems: "center",
   },
   doneIcon: {
     "&:hover": {

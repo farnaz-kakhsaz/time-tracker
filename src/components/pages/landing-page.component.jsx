@@ -123,7 +123,7 @@ export default function LandingPage() {
   const handleSwitchChange = (event) => setSwitchChecked(event.target.checked);
 
   return (
-    <ContainerBase>
+    <ContainerBase maxWidth="xl">
       <BoxBase textAlign="center">
         <TypographyBase
           className={classes.typography}
@@ -187,8 +187,8 @@ export default function LandingPage() {
         <BoxBase
           mt={5}
           display="flex"
-          flexDirection="column"
-          alignItems="center"
+          justifyContent="space-evenly"
+          flexWrap="wrap"
         >
           {state.tasksList?.map((task, index) => (
             <AccordionBase

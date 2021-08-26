@@ -41,6 +41,7 @@ export default function AccordionBase({
     <Accordion
       classes={{
         root: classes.accordionRoot,
+        expanded: classes.accordionExpanded,
       }}
       expanded={expanded === task.id}
       onChange={handleAccordionExpandChange(task.id)}
@@ -57,6 +58,7 @@ export default function AccordionBase({
       >
         <div className={classes.title}>{task.title}</div>
         <div className={classes.timerParent}>
+          {task.done && <BoxBase fontWeight="bold">Total Time:</BoxBase>}
           <Timer
             task={task}
             switchChecked={switchChecked}
