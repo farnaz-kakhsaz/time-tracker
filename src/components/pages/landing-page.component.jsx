@@ -24,6 +24,7 @@ const initialState = {
     done: false,
     time: 0,
     startedTime: 0,
+    finishedTime: 0,
   },
 };
 
@@ -52,7 +53,14 @@ const reducer = (state, action) => {
           task.id === action.task.id ? action.task : task
         ),
       };
-    case "UPDATE_START_TIME":
+    case "UPDATE_STARTED_TIME":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? action.task : task
+        ),
+      };
+    case "UPDATE_FINISHED_TIME":
       return {
         ...state,
         tasksList: state.tasksList.map((task) =>
@@ -98,12 +106,14 @@ export default function LandingPage() {
         done: false,
         time: 0,
         startedTime: 0,
+        finishedTime: 0,
       },
     });
   };
 
   const handleDoneBtnClick = (task) => (event) => {
     event.stopPropagation();
+    handleUpdateFinishedTime(task, new Date().toLocaleTimeString());
     dispatch({ type: "DONE_TASK", task });
   };
 
@@ -116,14 +126,20 @@ export default function LandingPage() {
     dispatch({ type: "DELETE_TASK", task });
 
   const handleUpdateTime = (task, time) => {
-    const newTask = { ...task, time };
+    const newTask = { ...task, time: time };
     dispatch({ type: "UPDATE_TIME", task: newTask });
   };
 
-  const handleUpdateStartTime = (task, startedTime) => {
-    const newTask = { ...task, startedTime };
-    dispatch({ type: "UPDATE_START_TIME", task: newTask });
+  const handleUpdateStartedTime = (task, startedTime) => {
+    const newTask = { ...task, startedTime: startedTime };
+    dispatch({ type: "UPDATE_STARTED_TIME", task: newTask });
   };
+
+  const handleUpdateFinishedTime = (task, finishedTime) => {
+    const newTask = { ...task, finishedTime: finishedTime };
+    dispatch({ type: "UPDATE_FINISHED_TIME", task: newTask });
+  };
+
   const handleSetDefaultState = () => {
     setToggleBtnValue("Personal");
     setInput({ ...INITIAL_INPUT_STATE });
@@ -211,7 +227,7 @@ export default function LandingPage() {
               handleDoneBtnClick={handleDoneBtnClick}
               handleUnDoneBtnClick={handleUnDoneBtnClick}
               handleUpdateTime={handleUpdateTime}
-              handleUpdateStartTime={handleUpdateStartTime}
+              handleUpdateStartedTime={handleUpdateStartedTime}
               handleDeleteBtnClick={handleDeleteBtnClick}
               handleSetDefaultState={handleSetDefaultState}
             />

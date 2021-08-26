@@ -22,7 +22,7 @@ export default function AccordionBase({
   handleDoneBtnClick,
   handleUnDoneBtnClick,
   handleUpdateTime,
-  handleUpdateStartTime,
+  handleUpdateStartedTime,
   handleDeleteBtnClick,
   handleSetDefaultState,
   ...rest
@@ -64,7 +64,7 @@ export default function AccordionBase({
             task={task}
             switchChecked={switchChecked}
             handleUpdateTime={handleUpdateTime}
-            handleUpdateStartTime={handleUpdateStartTime}
+            handleUpdateStartedTime={handleUpdateStartedTime}
             handleSetDefaultState={handleSetDefaultState}
           />
           {!task.done ? (
@@ -111,7 +111,9 @@ export default function AccordionBase({
           <div>
             Started Time: {task.startedTime !== 0 ? task.startedTime : "---"}
           </div>
-          <div>Finished Time: {task.project}</div>
+          <div>
+            Finished Time: {task.finishedTime !== 0 ? task.finishedTime : "---"}
+          </div>
         </BoxBase>
         {task.description}
       </AccordionDetails>
@@ -124,7 +126,7 @@ AccordionBase.propTypes = {
   handleDoneBtnClick: PropTypes.func.isRequired,
   handleUnDoneBtnClick: PropTypes.func.isRequired,
   handleUpdateTime: PropTypes.func.isRequired,
-  handleUpdateStartTime: PropTypes.func.isRequired,
+  handleUpdateStartedTime: PropTypes.func.isRequired,
   handleDeleteBtnClick: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,

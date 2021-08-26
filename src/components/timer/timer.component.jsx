@@ -16,7 +16,7 @@ export default function Timer({
   task,
   switchChecked,
   handleUpdateTime,
-  handleUpdateStartTime,
+  handleUpdateStartedTime,
   handleSetDefaultState,
 }) {
   const classes = useStyles();
@@ -26,7 +26,7 @@ export default function Timer({
   useEffect(() => {
     if (switchChecked) {
       setTimerOn(true);
-      handleUpdateStartTime(task, new Date().toLocaleTimeString());
+      handleUpdateStartedTime(task, new Date().toLocaleTimeString());
     }
     handleSetDefaultState();
   }, []);
@@ -40,11 +40,18 @@ export default function Timer({
     }
   }, [task.done]);
 
+  useEffect(() => {
+    console.log("checked");
+    // When timer started (on first time) update startedTime in state
+    if (time === 0 && timerOn)
+      handleUpdateStartedTime(task, new Date().toLocaleTimeString());
+    // When clicked stop button clear startedTime in state
+    if (!task.done && time === 0 && !timerOn) handleUpdateStartedTime(task, 0);
+  }, [time, timerOn]);
+
   const handleClickPlayBtn = (event) => {
     event.stopPropagation();
     setTimerOn(true);
-    if (time === 0)
-      handleUpdateStartTime(task, new Date().toLocaleTimeString());
   };
   const handleClickPauseBtn = (event) => {
     event.stopPropagation();
@@ -54,7 +61,6 @@ export default function Timer({
   const handleClickStopBtn = (event) => {
     event.stopPropagation();
     handleUpdateTime(task, 0);
-    handleUpdateStartTime(task, 0);
     setTimerOn(false);
     setTime(0);
   };
@@ -106,6 +112,6 @@ Timer.propTypes = {
   task: PropTypes.object.isRequired,
   switchChecked: PropTypes.bool.isRequired,
   handleUpdateTime: PropTypes.func.isRequired,
-  handleUpdateStartTime: PropTypes.func.isRequired,
+  handleUpdateStartedTime: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
 };
