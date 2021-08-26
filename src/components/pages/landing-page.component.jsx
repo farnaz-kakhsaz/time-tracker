@@ -23,6 +23,7 @@ const initialState = {
     createdTime: "",
     done: false,
     time: 0,
+    startedTime: 0,
   },
 };
 
@@ -30,13 +31,6 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TASK":
       return { ...state, tasksList: [...state.tasksList, action.task] };
-    case "UPDATE_TIME":
-      return {
-        ...state,
-        tasksList: state.tasksList.map((task) =>
-          task.id === action.task.id ? action.task : task
-        ),
-      };
     case "DONE_TASK":
       return {
         ...state,
@@ -49,6 +43,20 @@ const reducer = (state, action) => {
         ...state,
         tasksList: state.tasksList.map((task) =>
           task.id === action.task.id ? { ...task, done: false } : task
+        ),
+      };
+    case "UPDATE_TIME":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? action.task : task
+        ),
+      };
+    case "UPDATE_START_TIME":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? action.task : task
         ),
       };
     case "DELETE_TASK":
@@ -89,6 +97,7 @@ export default function LandingPage() {
         createdTime: new Date().toLocaleString(),
         done: false,
         time: 0,
+        startedTime: 0,
       },
     });
   };
@@ -104,13 +113,17 @@ export default function LandingPage() {
   };
 
   const handleDeleteBtnClick = (task) => (event) =>
-    dispatch({ type: "DELETE_TASK", task: task });
+    dispatch({ type: "DELETE_TASK", task });
 
   const handleUpdateTime = (task, time) => {
     const newTask = { ...task, time };
     dispatch({ type: "UPDATE_TIME", task: newTask });
   };
 
+  const handleUpdateStartTime = (task, startedTime) => {
+    const newTask = { ...task, startedTime };
+    dispatch({ type: "UPDATE_START_TIME", task: newTask });
+  };
   const handleSetDefaultState = () => {
     setToggleBtnValue("Personal");
     setInput({ ...INITIAL_INPUT_STATE });
@@ -195,9 +208,10 @@ export default function LandingPage() {
               task={task}
               switchChecked={switchChecked}
               key={index}
-              handleUpdateTime={handleUpdateTime}
               handleDoneBtnClick={handleDoneBtnClick}
               handleUnDoneBtnClick={handleUnDoneBtnClick}
+              handleUpdateTime={handleUpdateTime}
+              handleUpdateStartTime={handleUpdateStartTime}
               handleDeleteBtnClick={handleDeleteBtnClick}
               handleSetDefaultState={handleSetDefaultState}
             />

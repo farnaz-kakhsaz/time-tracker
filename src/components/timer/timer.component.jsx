@@ -16,6 +16,7 @@ export default function Timer({
   task,
   switchChecked,
   handleUpdateTime,
+  handleUpdateStartTime,
   handleSetDefaultState,
 }) {
   const classes = useStyles();
@@ -23,7 +24,10 @@ export default function Timer({
   const [minute, second, millisecond] = getTimeFormat(time);
 
   useEffect(() => {
-    if (switchChecked) setTimerOn(true);
+    if (switchChecked) {
+      setTimerOn(true);
+      handleUpdateStartTime(task, new Date().toLocaleTimeString());
+    }
     handleSetDefaultState();
   }, []);
 
@@ -39,6 +43,8 @@ export default function Timer({
   const handleClickPlayBtn = (event) => {
     event.stopPropagation();
     setTimerOn(true);
+    if (time === 0)
+      handleUpdateStartTime(task, new Date().toLocaleTimeString());
   };
   const handleClickPauseBtn = (event) => {
     event.stopPropagation();
@@ -48,6 +54,7 @@ export default function Timer({
   const handleClickStopBtn = (event) => {
     event.stopPropagation();
     handleUpdateTime(task, 0);
+    handleUpdateStartTime(task, 0);
     setTimerOn(false);
     setTime(0);
   };
@@ -99,5 +106,6 @@ Timer.propTypes = {
   task: PropTypes.object.isRequired,
   switchChecked: PropTypes.bool.isRequired,
   handleUpdateTime: PropTypes.func.isRequired,
+  handleUpdateStartTime: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
 };

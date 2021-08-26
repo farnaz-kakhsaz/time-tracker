@@ -19,9 +19,10 @@ export default function AccordionBase({
   task,
   index,
   switchChecked,
-  handleUpdateTime,
   handleDoneBtnClick,
   handleUnDoneBtnClick,
+  handleUpdateTime,
+  handleUpdateStartTime,
   handleDeleteBtnClick,
   handleSetDefaultState,
   ...rest
@@ -63,6 +64,7 @@ export default function AccordionBase({
             task={task}
             switchChecked={switchChecked}
             handleUpdateTime={handleUpdateTime}
+            handleUpdateStartTime={handleUpdateStartTime}
             handleSetDefaultState={handleSetDefaultState}
           />
           {!task.done ? (
@@ -90,11 +92,26 @@ export default function AccordionBase({
           display="flex"
           justifyContent="space-between"
           width="100%"
-          my={2}
+          mt={2}
           color="text.secondary"
         >
           <div>Created Time: {task.createdTime}</div>
-          <div>Project: {task.project}</div>
+          <div>
+            Project: <strong>{task.project}</strong>
+          </div>
+        </BoxBase>
+        <BoxBase
+          display="flex"
+          justifyContent="space-between"
+          width="100%"
+          mt={1}
+          mb={2}
+          color="text.secondary"
+        >
+          <div>
+            Started Time: {task.startedTime !== 0 ? task.startedTime : "---"}
+          </div>
+          <div>Finished Time: {task.project}</div>
         </BoxBase>
         {task.description}
       </AccordionDetails>
@@ -104,10 +121,11 @@ export default function AccordionBase({
 
 AccordionBase.propTypes = {
   task: PropTypes.object.isRequired,
-  handleUpdateTime: PropTypes.func.isRequired,
-  handleDeleteBtnClick: PropTypes.func.isRequired,
   handleDoneBtnClick: PropTypes.func.isRequired,
   handleUnDoneBtnClick: PropTypes.func.isRequired,
+  handleUpdateTime: PropTypes.func.isRequired,
+  handleUpdateStartTime: PropTypes.func.isRequired,
+  handleDeleteBtnClick: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
 };
