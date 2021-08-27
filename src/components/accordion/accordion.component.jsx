@@ -20,6 +20,7 @@ export default function Accordion({
   handleClickUnDoneBtn,
   handleUpdateTime,
   handleUpdateStartedTime,
+  handleUpdateFinishedTime,
   handleClickDeleteBtn,
   handleClickOpenDialogToEdit,
   handleSetDefaultState,
@@ -34,13 +35,13 @@ export default function Accordion({
   const [expanded, setExpanded] = useState(task.id);
 
   const handleAccordionExpandChange = (id) => (event, newExpanded) =>
-    setExpanded(newExpanded ? id : false);
+    setExpanded(newExpanded ? true : false);
 
   return (
     <AccordionBase
       id={task.id}
       task={task}
-      expanded={task.id === expanded}
+      expanded={expanded}
       classes={classes}
       classesAccordion={{
         root: classes.accordionRoot,
@@ -64,6 +65,7 @@ export default function Accordion({
               switchChecked={switchChecked}
               handleUpdateTime={handleUpdateTime}
               handleUpdateStartedTime={handleUpdateStartedTime}
+              handleUpdateFinishedTime={handleUpdateFinishedTime}
               handleSetDefaultState={handleSetDefaultState}
             />
             {!task.done ? (
@@ -138,6 +140,7 @@ Accordion.propTypes = {
   handleClickUnDoneBtn: PropTypes.func.isRequired,
   handleUpdateTime: PropTypes.func.isRequired,
   handleUpdateStartedTime: PropTypes.func.isRequired,
+  handleUpdateFinishedTime: PropTypes.func.isRequired,
   handleClickDeleteBtn: PropTypes.func.isRequired,
   handleClickOpenDialogToEdit: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,

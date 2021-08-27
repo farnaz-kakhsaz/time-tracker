@@ -226,6 +226,7 @@ export default function LandingPage() {
               handleClickUnDoneBtn={handleClickUnDoneBtn}
               handleUpdateTime={handleUpdateTime}
               handleUpdateStartedTime={handleUpdateStartedTime}
+              handleUpdateFinishedTime={handleUpdateFinishedTime}
               handleClickDeleteBtn={handleClickDeleteBtn}
               handleClickOpenDialogToEdit={handleClickOpenDialogToEdit}
               handleSetDefaultState={handleSetDefaultState}

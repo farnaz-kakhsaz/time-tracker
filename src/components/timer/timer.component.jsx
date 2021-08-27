@@ -17,6 +17,7 @@ export default function Timer({
   switchChecked,
   handleUpdateTime,
   handleUpdateStartedTime,
+  handleUpdateFinishedTime,
   handleSetDefaultState,
 }) {
   const classes = useStyles();
@@ -38,6 +39,7 @@ export default function Timer({
       handleUpdateTime(task, time);
       setTimerOn(false);
     }
+    if (!task.done) handleUpdateFinishedTime(task, 0);
   }, [task.done]);
 
   useEffect(() => {
@@ -112,5 +114,6 @@ Timer.propTypes = {
   switchChecked: PropTypes.bool.isRequired,
   handleUpdateTime: PropTypes.func.isRequired,
   handleUpdateStartedTime: PropTypes.func.isRequired,
+  handleUpdateFinishedTime: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
 };
