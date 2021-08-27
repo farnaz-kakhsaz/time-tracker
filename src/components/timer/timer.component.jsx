@@ -1,5 +1,11 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
+// Reducer
+import {
+  updateTime,
+  updateStartedTime,
+  updateFinishedTime,
+} from "../../_action/task.actions";
 // Components
 import IconButtonBase from "../items/icon-button-base/icon-button-base";
 // Icons
@@ -13,11 +19,9 @@ import { getTimeFormat } from "../../helper/getTimeFormat";
 import { useStyles } from "./timer.styles";
 
 export default function Timer({
+  dispatch,
   task,
   switchChecked,
-  handleUpdateTime,
-  handleUpdateStartedTime,
-  handleUpdateFinishedTime,
   handleSetDefaultState,
 }) {
   const classes = useStyles();
@@ -27,7 +31,7 @@ export default function Timer({
   useEffect(() => {
     if (switchChecked) {
       setTimerOn(true);
-      handleUpdateStartedTime(task, new Date().toLocaleTimeString());
+      updateStartedTime(dispatch, task, new Date().toLocaleTimeString());
     }
     handleSetDefaultState();
   }, []);
@@ -36,18 +40,19 @@ export default function Timer({
 
   useEffect(() => {
     if (task.done) {
-      handleUpdateTime(task, time);
+      updateTime(dispatch, task, time);
       setTimerOn(false);
     }
-    if (!task.done) handleUpdateFinishedTime(task, 0);
+    if (!task.done) updateFinishedTime(dispatch, task, 0);
   }, [task.done]);
 
   useEffect(() => {
     // When timer started (on first time) update startedTime in state
     if (time === 0 && timerOn)
-      handleUpdateStartedTime(task, new Date().toLocaleTimeString());
+      updateStartedTime(dispatch, task, new Date().toLocaleTimeString());
     // When clicked stop button clear startedTime in state
-    if (!task.done && time === 0 && !timerOn) handleUpdateStartedTime(task, 0);
+    if (!task.done && time === 0 && !timerOn)
+      updateStartedTime(dispatch, task, 0);
   }, [time, timerOn]);
 
   const handleClickPlayBtn = (event) => {
@@ -56,12 +61,12 @@ export default function Timer({
   };
   const handleClickPauseBtn = (event) => {
     event.stopPropagation();
-    handleUpdateTime(task, time);
+    updateTime(dispatch, task, time);
     setTimerOn(false);
   };
   const handleClickStopBtn = (event) => {
     event.stopPropagation();
-    handleUpdateTime(task, 0);
+    updateTime(dispatch, task, 0);
     setTimerOn(false);
     setTime(0);
   };
@@ -110,10 +115,8 @@ export default function Timer({
 }
 
 Timer.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   switchChecked: PropTypes.bool.isRequired,
-  handleUpdateTime: PropTypes.func.isRequired,
-  handleUpdateStartedTime: PropTypes.func.isRequired,
-  handleUpdateFinishedTime: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
 };

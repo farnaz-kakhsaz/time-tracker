@@ -1,6 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
+// Reducer
+import { addTask, editTask } from "../../_action/task.actions";
 // Components
 import DialogBase from "../items/dialog-base/dialog-base";
 import TextFieldBase from "../items/text-field-base/text-field-base";
@@ -11,6 +13,7 @@ import BoxBase from "../items/box-base/box-base";
 import { useStyles } from "./dialog.styles";
 
 export default function Dialog({
+  dispatch,
   input,
   editMoodState,
   openDialog,
@@ -21,8 +24,6 @@ export default function Dialog({
   setSwitchChecked,
   setOpenDialog,
   handleInputChange,
-  handleAddTask,
-  handleEditTask,
   handleSetDefaultState,
   ...rest
 }) {
@@ -44,12 +45,13 @@ export default function Dialog({
 
   const handleClickAddTaskBtn = () => {
     setOpenDialog(false);
-    handleAddTask();
+    addTask(dispatch, input.title, input.description, toggleBtnValue);
   };
 
   const handleClickEditTaskBtn = () => {
     setOpenDialog(false);
-    handleEditTask(
+    editTask(
+      dispatch,
       editMoodState,
       input.title,
       input.description,
@@ -131,6 +133,7 @@ export default function Dialog({
 }
 
 Dialog.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   input: PropTypes.object.isRequired,
   editMoodState: PropTypes.object.isRequired,
   openDialog: PropTypes.bool.isRequired,
@@ -141,8 +144,6 @@ Dialog.propTypes = {
   setSwitchChecked: PropTypes.func.isRequired,
   setOpenDialog: PropTypes.func.isRequired,
   handleInputChange: PropTypes.func.isRequired,
-  handleAddTask: PropTypes.func.isRequired,
-  handleEditTask: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
 };

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+// Reducer
+import { doneTask, unDoneTask, deleteTask } from "../../_action/task.actions";
 // Components
 import AccordionBase from "../items/accordion-base/accordion-base";
 import BoxBase from "../items/box-base/box-base";
@@ -14,14 +16,9 @@ import ClearIcon from "@material-ui/icons/Clear";
 import { useStyles } from "./accordion.styles";
 
 export default function Accordion({
+  dispatch,
   task,
   switchChecked,
-  handleClickDoneBtn,
-  handleClickUnDoneBtn,
-  handleUpdateTime,
-  handleUpdateStartedTime,
-  handleUpdateFinishedTime,
-  handleClickDeleteBtn,
   handleClickOpenDialogToEdit,
   handleSetDefaultState,
   ...rest
@@ -32,7 +29,7 @@ export default function Accordion({
     textDecoration: task.done ? "line-through" : "none",
   };
   const classes = useStyles(props);
-  const [expanded, setExpanded] = useState(task.id);
+  const [expanded, setExpanded] = useState(true);
 
   const handleAccordionExpandChange = (id) => (event, newExpanded) =>
     setExpanded(newExpanded ? true : false);
@@ -61,24 +58,22 @@ export default function Accordion({
           <div className={classes.timerParent}>
             {task.done && <BoxBase fontWeight="bold">Total Time:</BoxBase>}
             <Timer
+              dispatch={dispatch}
               task={task}
               switchChecked={switchChecked}
-              handleUpdateTime={handleUpdateTime}
-              handleUpdateStartedTime={handleUpdateStartedTime}
-              handleUpdateFinishedTime={handleUpdateFinishedTime}
               handleSetDefaultState={handleSetDefaultState}
             />
             {!task.done ? (
               <IconButtonBase
                 className={classes.doneIcon}
-                onClick={handleClickDoneBtn(task)}
+                onClick={doneTask(dispatch, task)}
               >
                 <DoneIcon />
               </IconButtonBase>
             ) : (
               <IconButtonBase
                 color="secondary"
-                onClick={handleClickUnDoneBtn(task)}
+                onClick={unDoneTask(dispatch, task)}
               >
                 <ClearIcon />
               </IconButtonBase>
@@ -86,7 +81,7 @@ export default function Accordion({
             <IconButtonBase onClick={handleClickOpenDialogToEdit(task)}>
               <EditIcon />
             </IconButtonBase>
-            <IconButtonBase onClick={handleClickDeleteBtn(task)}>
+            <IconButtonBase onClick={deleteTask(dispatch, task)}>
               <Delete />
             </IconButtonBase>
           </div>
@@ -134,14 +129,9 @@ export default function Accordion({
 }
 
 Accordion.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   switchChecked: PropTypes.bool.isRequired,
-  handleClickDoneBtn: PropTypes.func.isRequired,
-  handleClickUnDoneBtn: PropTypes.func.isRequired,
-  handleUpdateTime: PropTypes.func.isRequired,
-  handleUpdateStartedTime: PropTypes.func.isRequired,
-  handleUpdateFinishedTime: PropTypes.func.isRequired,
-  handleClickDeleteBtn: PropTypes.func.isRequired,
   handleClickOpenDialogToEdit: PropTypes.func.isRequired,
   handleSetDefaultState: PropTypes.func.isRequired,
   rest: PropTypes.any,
