@@ -99,7 +99,11 @@ export default function Accordion({
             mt={2}
             color="text.secondary"
           >
-            <div>Created Time: {task.createdTime}</div>
+            {task.editedTime ? (
+              <div>Edited Time: {task.editedTime}</div>
+            ) : (
+              <div>Created Time: {task.createdTime}</div>
+            )}
             <div>
               Project: <strong>{task.project}</strong>
             </div>
@@ -116,7 +120,7 @@ export default function Accordion({
               Started Time: {task.startedTime !== 0 ? task.startedTime : "---"}
             </div>
             <div>
-              Finished Time:{" "}
+              Finished Time:
               {task.finishedTime !== 0 ? task.finishedTime : "---"}
             </div>
           </BoxBase>

@@ -87,11 +87,11 @@ export default function LandingPage() {
   const INITIAL_INPUT_STATE = { title: "", description: "" };
 
   const [state, dispatch] = useReducer(reducer, initialState);
+
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
   const [switchChecked, setSwitchChecked] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [editMoodState, setEditMoodState] = useState({});
-
   const [input, setInput, handleInputChange] = useInputChange({
     ...INITIAL_INPUT_STATE,
   });
@@ -178,6 +178,8 @@ export default function LandingPage() {
     setToggleBtnValue("Personal");
     setInput({ ...INITIAL_INPUT_STATE });
     setSwitchChecked(false);
+    setOpenDialog(false);
+    setEditMoodState({});
   };
 
   return (

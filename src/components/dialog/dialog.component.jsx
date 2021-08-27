@@ -45,6 +45,7 @@ export default function Dialog({
   const handleClickAddTaskBtn = () => {
     setOpenDialog(false);
     handleAddTask();
+    handleSetDefaultState();
   };
 
   const handleClickEditTaskBtn = () => {
@@ -55,6 +56,7 @@ export default function Dialog({
       input.description,
       toggleBtnValue
     );
+    handleSetDefaultState();
   };
 
   const handleClickCloseBtn = () => {
