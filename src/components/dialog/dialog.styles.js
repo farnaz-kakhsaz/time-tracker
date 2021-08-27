@@ -42,4 +42,21 @@ export const useStyles = makeStyles((theme) => ({
   dialogActions: {
     margin: theme.spacing(2),
   },
+  startTimerParent: {
+    "& > :last-child": {
+      marginLeft: theme.spacing(0.5),
+    },
+  },
+  projectParent: {
+    "& > :last-child": {
+      marginLeft: theme.spacing(2),
+    },
+  },
+  inputParent: {
+    "& > :first-child": {
+      margin: theme.spacing(0, 0, 2, 0),
+    },
+    display: "flex",
+    flexDirection: "column",
+  },
 }));

@@ -1,12 +1,9 @@
 import { useEffect, useState, useReducer } from "react";
 // Components
 import ContainerBase from "../items/container-base/container-base";
-import TextFieldBase from "../items/text-field-base/text-field-base";
 import TypographyBase from "../items/typography-base/typography-base";
 import Dialog from "../dialog/dialog.component";
 import BoxBase from "../items/box-base/box-base";
-import ToggleButtonBase from "../items/toggle-button-base/toggle-button-base.component";
-import SwitchBase from "../items/switch-base/switch-base";
 import Accordion from "../accordion/accordion.component";
 // Helper
 import { useInputChange } from "../../helper/useInputChange";
@@ -152,11 +149,6 @@ export default function LandingPage() {
     setSwitchChecked(false);
   };
 
-  const handleToggleOnChange = (event, newValue) =>
-    newValue !== null && setToggleBtnValue(newValue);
-
-  const handleSwitchChange = (event) => setSwitchChecked(event.target.checked);
-
   return (
     <ContainerBase maxWidth="xl">
       <BoxBase textAlign="center">
@@ -167,60 +159,23 @@ export default function LandingPage() {
         >
           Time Tracker
         </TypographyBase>
-
         <Dialog
-          inputValue={input}
+          input={input}
           editMood={editMood}
           openDialog={openDialog}
+          toggleBtnValue={toggleBtnValue}
+          setToggleBtnValue={setToggleBtnValue}
+          switchChecked={switchChecked}
+          setSwitchChecked={setSwitchChecked}
           setOpenDialog={setOpenDialog}
+          handleInputChange={handleInputChange}
           handleAddTask={handleAddTask(
             input.title,
             input.description,
             toggleBtnValue
           )}
           handleSetDefaultState={handleSetDefaultState}
-        >
-          <BoxBase
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            fontWeight="bold"
-            fontSize="16px"
-            mb={2}
-          >
-            <div className={classes.startTimerParent}>
-              Start Timer:
-              <SwitchBase
-                handleSwitchChange={handleSwitchChange}
-                switchChecked={switchChecked}
-              />
-            </div>
-            <div className={classes.projectParent}>
-              Project:
-              <ToggleButtonBase
-                toggleValueList={["Personal", "Work"]}
-                value={toggleBtnValue}
-                handleToggleOnChange={handleToggleOnChange}
-              />
-            </div>
-          </BoxBase>
-          <div className={classes.inputParent}>
-            <TextFieldBase
-              value={input.title}
-              onChange={handleInputChange}
-              label="Title"
-              name="title"
-            />
-            <TextFieldBase
-              value={input.description}
-              onChange={handleInputChange}
-              label="Description"
-              name="description"
-              multiline
-              rows={4}
-            />
-          </div>
-        </Dialog>
+        />
         <BoxBase
           mt={5}
           display="flex"
