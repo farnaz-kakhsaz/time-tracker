@@ -30,6 +30,13 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TASK":
       return { ...state, tasksList: [...state.tasksList, action.task] };
+    case "EDIT_TASK":
+      return {
+        ...state,
+        tasksList: state.tasksList.map((task) =>
+          task.id === action.task.id ? action.task : task
+        ),
+      };
     case "DONE_TASK":
       return {
         ...state,
@@ -83,7 +90,7 @@ export default function LandingPage() {
   const [toggleBtnValue, setToggleBtnValue] = useState("Personal");
   const [switchChecked, setSwitchChecked] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editMood, setEditMood] = useState(false);
+  const [editMoodState, setEditMoodState] = useState({});
 
   const [input, setInput, handleInputChange] = useInputChange({
     ...INITIAL_INPUT_STATE,
@@ -109,6 +116,30 @@ export default function LandingPage() {
         startedTime: 0,
         finishedTime: 0,
       },
+    });
+  };
+  const handleClickOpenDialogToEdit = (task) => (event) => {
+    event.stopPropagation();
+    setToggleBtnValue(task.project);
+    setInput({
+      title: task.title,
+      description: task.description,
+    });
+    setEditMoodState(task);
+    setOpenDialog(true);
+  };
+
+  const handleEditTask = (task, title, description, project) => {
+    const newTask = {
+      ...task,
+      title,
+      description,
+      project,
+      editedTime: new Date().toLocaleString(),
+    };
+    dispatch({
+      type: "EDIT_TASK",
+      task: newTask,
     });
   };
 
@@ -161,11 +192,12 @@ export default function LandingPage() {
         </TypographyBase>
         <Dialog
           input={input}
-          editMood={editMood}
+          editMoodState={editMoodState}
           openDialog={openDialog}
           toggleBtnValue={toggleBtnValue}
           setToggleBtnValue={setToggleBtnValue}
           switchChecked={switchChecked}
+          setEditMoodState={setEditMoodState}
           setSwitchChecked={setSwitchChecked}
           setOpenDialog={setOpenDialog}
           handleInputChange={handleInputChange}
@@ -174,6 +206,7 @@ export default function LandingPage() {
             input.description,
             toggleBtnValue
           )}
+          handleEditTask={handleEditTask}
           handleSetDefaultState={handleSetDefaultState}
         />
         <BoxBase
@@ -192,6 +225,7 @@ export default function LandingPage() {
               handleUpdateTime={handleUpdateTime}
               handleUpdateStartedTime={handleUpdateStartedTime}
               handleClickDeleteBtn={handleClickDeleteBtn}
+              handleClickOpenDialogToEdit={handleClickOpenDialogToEdit}
               handleSetDefaultState={handleSetDefaultState}
             />
           ))}

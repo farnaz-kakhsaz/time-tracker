@@ -12,10 +12,11 @@ import { useStyles } from "./dialog.styles";
 
 export default function Dialog({
   input,
-  editMood,
+  editMoodState,
   openDialog,
   toggleBtnValue,
   switchChecked,
+  setEditMoodState,
   setToggleBtnValue,
   setSwitchChecked,
   setOpenDialog,
@@ -33,7 +34,10 @@ export default function Dialog({
 
   const handleSwitchChange = (event) => setSwitchChecked(event.target.checked);
 
-  const handleClickOpenDialogBtn = () => setOpenDialog(true);
+  const handleClickOpenDialogBtn = () => {
+    setOpenDialog(true);
+    if (Object.keys(editMoodState).length) setEditMoodState({});
+  };
 
   const handleCloseDialog = () =>
     input.title ? setShakeDialog(true) : handleClickCloseBtn();
@@ -41,6 +45,16 @@ export default function Dialog({
   const handleClickAddTaskBtn = () => {
     setOpenDialog(false);
     handleAddTask();
+  };
+
+  const handleClickEditTaskBtn = () => {
+    setOpenDialog(false);
+    handleEditTask(
+      editMoodState,
+      input.title,
+      input.description,
+      toggleBtnValue
+    );
   };
 
   const handleClickCloseBtn = () => {
@@ -55,14 +69,18 @@ export default function Dialog({
       open={openDialog}
       onClose={handleCloseDialog}
       onAnimationEnd={handleAnimationEnd}
-      dialogTilte={editMood ? "Edit Task" : "Add Task"}
+      dialogTilte={Object.keys(editMoodState).length ? "Edit Task" : "Add Task"}
       classes={classes}
       classesDialog={{ paper: clsx({ [classes.dialogPaper]: shakeDialog }) }}
       disabled={!input.title}
-      addOrEditBtnTitle={editMood ? "Edit Task" : "Add Task"}
+      addOrEditBtnTitle={
+        Object.keys(editMoodState).length ? "Edit Task" : "Add Task"
+      }
       handleClickCloseBtn={handleClickCloseBtn}
       handleClickAddOrEditTask={
-        editMood ? handleEditTask : handleClickAddTaskBtn
+        Object.keys(editMoodState).length
+          ? handleClickEditTaskBtn
+          : handleClickAddTaskBtn
       }
       handleClickOpenDialogBtn={handleClickOpenDialogBtn}
       {...rest}
@@ -113,10 +131,11 @@ export default function Dialog({
 
 Dialog.propTypes = {
   input: PropTypes.object.isRequired,
-  editMood: PropTypes.bool.isRequired,
+  editMoodState: PropTypes.object.isRequired,
   openDialog: PropTypes.bool.isRequired,
   toggleBtnValue: PropTypes.string.isRequired,
   switchChecked: PropTypes.bool.isRequired,
+  setEditMoodState: PropTypes.func.isRequired,
   setToggleBtnValue: PropTypes.func.isRequired,
   setSwitchChecked: PropTypes.func.isRequired,
   setOpenDialog: PropTypes.func.isRequired,
