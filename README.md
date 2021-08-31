@@ -1,6 +1,6 @@
 # time-tracker
 
-This is a simple Time Tracker.
+This is a simple Time Tracker. Check out the demo here: [react-time-tracker.vercel.app](https://react-time-tracker.vercel.app)
 
 ## Getting Started with Create React App
 
